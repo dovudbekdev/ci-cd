@@ -6,7 +6,7 @@ app.get("/hello", (req,res)=>{
     res.send("Salom");
 })
 
-const PORT = 3000;
+const PORT = 5000;
 app.listen(PORT, ()=>{
     console.log(`Server ${PORT} da ishga tushdi`)
 })
