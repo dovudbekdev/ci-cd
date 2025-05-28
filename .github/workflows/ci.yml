@@ -1,0 +1,24 @@
+name: NodeJs CI pipeline
+
+on:
+  push:
+    branches: [main]
+
+jobs:
+  start:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Repositoryni yuklash
+        uses: actions/checkout@v3
+
+      - name: NodeJs ni o'rnatish
+        uses: actions/setup-node@v3
+        with:
+          node-version: '18'
+
+      - name: Kutubxonalarni o'rnatish
+        run: npm install
+
+      - name: Kodni ishga tushirish (test maqsadida)
+        run: npm run start
