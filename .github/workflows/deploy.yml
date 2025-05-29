@@ -1,0 +1,29 @@
+name: Deploy to VPS
+
+on: 
+  push:
+    branches:
+        - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+        - name: Kodni yuklash
+          uses: actions/checkout@v4
+
+        - name: SSH kalit'ni sozlash
+          run: |
+            mkdir -p ~/.ssh
+            echo "${{secrets.SSH_PRIVATE_KEY}}" > ~/.ssh/id_rsa
+            chmod 600 ~/.ssh/id_rsa
+          shell: bash
+
+        - name: Serverga loyihani joylash
+          env: 
+            HOST: ${{secrets.HOST}}
+            USER: ${{secrets.USER}}
+            PORT: ${{secrets.PORT}}
+          run: |
+            ssh-keyscan -H $HOST >> ~/.ssh/known_hosts
+            ssh $USER@$HOST "cd ci-cd && git pull && pm2 restart ci-cd"
